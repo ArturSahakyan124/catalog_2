@@ -1,0 +1,48 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+  line-height: 1.6;
+}   
+
+
+/* ///////car//////// */
+
+.main-block{
+
+  width: 100%;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+ 
+
+}
+
+.img-block{
+  width: 50%;
+  height: 100%;
+  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img-block img{
+  width: 50%;
+ 
+}
+.info{
+    width: 50%;
+    height: 100%;
+ 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 30px;
+}
