@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../models/User.php';
+require_once __DIR__ . '/../helper.php';
 
 class RegController {
     private $username;
@@ -21,22 +22,7 @@ class RegController {
             $this->username = $_POST['login'] ?? '';
             $this->email = $_POST['email'] ?? '';
             $this->password = $_POST['password'] ?? '';
-
-            if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = __DIR__ . '../../assets/uploads/userPhoto/';
-
-                if (!is_dir($uploadDir)) {
-                    mkdir($uploadDir, 0777, true);
-                }
-
-                $fileName = uniqid() . '_' . basename($_FILES['avatar']['name']);
-                $uploadPath = $uploadDir . $fileName;
-
-                move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadPath);
-
-                $this->avatarPath = 'uploads/userPhoto/' . $fileName;
-
-            }
+            $this->avatarPath = uploadPhoto('avatar', 'userPhoto');
         }
     }
 
@@ -54,11 +40,7 @@ class RegController {
         }
 
         if (!empty($this->error)) {
-            echo json_encode([
-                "status" => false,
-                "type" => 1,
-                "message" => $this->error
-            ]);
+            jsonStatus(false, $this->error);
             exit;
         }
     }
@@ -75,15 +57,9 @@ class RegController {
         );
 
         if ($success) {
-            echo json_encode([
-                "status" => true,
-                "message" => "Registration successful"
-            ]);
+            jsonStatus(true, 'Registration successful');
         } else {
-            echo json_encode([
-                "status" => false,
-                "message" => "User with this email already exists"
-            ]);
+            jsonStatus(false, 'User with this email already exists');
         }
     }
 }

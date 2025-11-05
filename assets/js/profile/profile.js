@@ -1,67 +1,103 @@
 function openForm() {
-  let form = document.querySelector('.modal-card');
+  const form = document.querySelector('.modal-card');
   form.classList.toggle('modal-card-act');
 
-  
-    document.querySelector('#modalTitle').textContent = "New Card";
-    document.querySelector('#name').value = "";
-    document.querySelector('#model').value = "";
-    document.querySelector('#year').value = "";
-    document.querySelector('#FormID').value = "";
-    document.getElementById('photo').value = '';
-
+  document.querySelector('#modalTitle').textContent = "New Card";
+  document.querySelector('#name').value = "";
+  document.querySelector('#model').value = "";
+  document.querySelector('#year').value = "";
+  document.querySelector('#FormID').value = "";
+  document.getElementById('photo').value = '';
 }
 
- 
+class FormHandler {
+  constructor() {
+    this.addBtn = document.querySelector("#addBtn");
+    this.closeBtn = document.querySelector(".close-x");
+    this.searchInput = document.querySelector('#search');
+    this.dropArea = document.getElementById('dropArea');
+    this.fileInput = document.getElementById('photo');
+    this.preview = document.getElementById('preview');
+    this.previewImg = document.getElementById('previewImg');
+    this.init();
+  }
 
-let addBtn = document.querySelector("#addBtn");
-addBtn.addEventListener('click', openForm);
+  init() {
+    this.addBtn.addEventListener('click', openForm);
+    this.closeBtn.addEventListener('click', openForm);
+    document.addEventListener('click', e => this.handleEdit(e));
+    this.searchInput.addEventListener("input", () => this.search());
+    //this.initDragAndDrop();
+  }
 
+  initDragAndDrop() {
+    this.dropArea.addEventListener('click', () => this.fileInput.click());
+    this.dropArea.querySelector('.browse').addEventListener('click', e => {
+      e.stopPropagation();
+      this.fileInput.click();
+    });
 
-let xBtn = document.querySelector(".close-x");
-xBtn.addEventListener('click', openForm);
+    this.dropArea.addEventListener('dragover', e => {
+      e.preventDefault();
+      this.dropArea.classList.add('dragover');
+    });
 
-document.addEventListener('click', e => {
-  const btn = e.target.closest('.action-edit');
-  if (!btn) return;
+    this.dropArea.addEventListener('dragleave', e => {
+      e.preventDefault();
+      this.dropArea.classList.remove('dragover');
+    });
 
-  const card = btn.closest('.product-box');
-  if (!card) return;
+    this.dropArea.addEventListener('drop', e => {
+      e.preventDefault();
+      this.dropArea.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      this.showPreview(file);
+    });
 
-  const name  = card.querySelector('.car-name').textContent.trim();
-  const model = card.querySelector('.model').textContent.trim();
-  const year  = card.querySelector('.product-details').textContent.replace(/\D/g, '');
-  const id    = card.querySelector('.car-id').value;
+    this.fileInput.addEventListener('change', () => {
+      const file = this.fileInput.files[0];
+      this.showPreview(file);
+    });
+  }
 
-  openForm();
-  document.querySelector('#modalTitle').textContent = "Edit Product";
-  document.querySelector('#name').value = name;
-  document.querySelector('#model').value = model;
-  document.querySelector('#year').value = year;
-  document.querySelector('#FormID').value = id;
+  showPreview(file) {
+    if (!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      this.previewImg.src = e.target.result;
+      this.preview.classList.remove('none');
+    };
+    reader.readAsDataURL(file);
+  }
 
-});
+  handleEdit(e) {
+    const btn = e.target.closest('.action-edit');
+    if (!btn) return;
+    const card = btn.closest('.product-box');
+    if (!card) return;
 
+    const name  = card.querySelector('.car-name').textContent.trim();
+    const model = card.querySelector('.model').textContent.trim();
+    const year  = card.querySelector('.product-details').textContent.replace(/\D/g, '');
+    const id    = card.querySelector('.car-id').value;
 
+    openForm();
+    document.querySelector('#modalTitle').textContent = "Edit Product";
+    document.querySelector('#name').value = name;
+    document.querySelector('#model').value = model;
+    document.querySelector('#year').value = year;
+    document.querySelector('#FormID').value = id;
+  }
 
+  search() {
+    const query = this.searchInput.value.toLowerCase();
+    document.querySelectorAll('.product-title').forEach(title => {
+      const card = title.closest('.product-box');
+      title.textContent.toLowerCase().includes(query)
+        ? card.classList.remove('non-act')
+        : card.classList.add('non-act');
+    });
+  }
+}
 
-
-const searchInput = document.querySelector('#search');
-
-searchInput.addEventListener("input", function() {
-  const query = searchInput.value.toLowerCase();
-
-  const productTitles = document.querySelectorAll('.product-title');
-
-  productTitles.forEach((titleElement) => {
-    const productCard = titleElement.closest('.product-box');
-    const text = titleElement.textContent.toLowerCase();
-
-    if (text.includes(query)) {
-      productCard.classList.remove('non-act');
-    } else {
-      productCard.classList.add('non-act');
-    }
-  });
-});
-
+new FormHandler();

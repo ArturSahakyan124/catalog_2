@@ -12,7 +12,9 @@
     <head>
         <meta charset="UTF-8">
         <title>Authorization and Registration</title>
+        <link rel="stylesheet" href="../../assets/css/auth.css">
         <link rel="stylesheet" href="../../assets/css/main.css">
+        
     </head>
     <body>
 

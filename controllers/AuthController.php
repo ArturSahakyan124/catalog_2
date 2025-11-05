@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../models/User.php';
+require_once __DIR__ . '/../helper.php';
 
 class AuthController {
     private $login;
@@ -9,9 +10,19 @@ class AuthController {
     private array $error = [];
 
     public function __construct() {
+
+
+        if(isset($_POST['logout'])){
+
+            $this->logout();
+            exit;
+
+        }
+      
         $this->get();
         $this->validation();
         $this->auth();
+
     }
 
     public function get() {
@@ -27,30 +38,31 @@ class AuthController {
         }
 
         if (!empty($this->error)) {
-            echo json_encode([
-                "status" => false,
-                "type" => 1,
-                "message" => $this->error
-            ]);
+
+            jsonStatus(false,$this->error);
             return false;
         }
     }
 
     private function auth() {
+
         $db = Database::getInstance();
         $this->userModel = new User($db);
 
         if ($this->userModel->login($this->login, $this->password)) {
-            echo json_encode([
-                "status" => true,
-                "message" => "Login successful"
-            ]);
+
+            jsonStatus(true,"Login successful");
+
         } else {
-            echo json_encode([
-                "status" => false,
-                "message" => "Invalid login or password"
-            ]);
+            jsonStatus(false, "Invalid login or password");
         }
+    }
+    public function logout() {
+                
+        session_start();
+        unset($_SESSION['user']);
+        header('Location: ../views/auth/login.php');
+
     }
 }
 

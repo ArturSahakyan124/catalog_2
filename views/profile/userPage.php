@@ -1,8 +1,11 @@
+
+
 <?php
 session_start();
 if (empty($_SESSION['user'])) {
     header('Location: ../auth/login.php');
 }
+
 ?>
 
 <!doctype html>
@@ -11,6 +14,7 @@ if (empty($_SESSION['user'])) {
     <meta charset="UTF-8">
     <title>Authorization and Registration</title>
     <link rel="stylesheet" href="../../assets/css/profile.css">
+	<link rel="stylesheet" href="../../assets/css/main.css">
 </head>
  
 
@@ -35,7 +39,13 @@ if (empty($_SESSION['user'])) {
 				<div class="user-info">
 				<h2 style="margin: 10px 0;"><a href="vendor/profilePage/userProfile.php?id=<?= $_SESSION['user']['id'] ?>"><?= $_SESSION['user']['login'] ?></a></h2>
 				<a href="#"><?= $_SESSION['user']['email'] ?></a>
-				<a href="../../controllers/LogoutController.php" class="logout">logout</a>
+				<!-- <a href="../../controllers/LogoutController.php" class="logout">logout</a> -->
+
+				<form method="post" action="../../controllers/AuthController.php">
+                	<input type="hidden" name="logout">
+                	<button class="action-btn logout-btn">logout</button>
+            	</form>
+
 			</div>
  		</div>
 			
@@ -79,7 +89,15 @@ if (empty($_SESSION['user'])) {
 
 				<div class="row">
 					<label class="label" for="photo">Photo</label>
-					<input id="photo" class="input" name="photo" type="file" accept="image/*">
+
+					<div class="drop-area" id="dropArea">
+						<p> Select file </p>
+						<input type="file" id="photo" name="photo" accept="image/*">
+					</div>
+
+					<div class="preview" id="preview">
+						<img id="previewImg" alt="Preview">
+					</div>
 				</div>
 
 				<div class="actions">
@@ -91,6 +109,7 @@ if (empty($_SESSION['user'])) {
 	</div>
         <script src="../../assets/js/jquery-3.4.1.min.js"></script>
 	<script src="../../assets/js/profile/profile.js"></script>
+		<script src="../../assets/js/profile/dragAndDrop.js"></script>
 	<script src="../../assets/js/profile/profile_ajax.js"></script>
 
 </body>

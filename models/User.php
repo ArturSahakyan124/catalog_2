@@ -1,5 +1,5 @@
 <?php
-// app/models/User.php
+
 session_start();
 class User {
     private $db;

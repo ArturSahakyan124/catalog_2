@@ -10,7 +10,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Authorization and Registration</title>
-    <link rel="stylesheet" href="../../assets/css/main.css">
+        <link rel="stylesheet" href="../../assets/css/auth.css">
+        <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
 <body>
 
@@ -28,7 +29,7 @@
         <input type="password" name="password" placeholder="Enter your password">
         <button type="submit" class="register-btn">Register</button>
         <p>
-            Already have an account? - <a href="index.php">Log in</a>!
+            Already have an account? - <a href="login.php">Log in</a>!
         </p>
         <p class="msg none">Lorem ipsum.</p>
     </form>

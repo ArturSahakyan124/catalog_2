@@ -22,7 +22,7 @@ $(document).ready(function () {
  
     $('#photo').on('change', function (e) {
         photo = e.target.files[0] || null;
-        console.log('Selected photo:', photo);
+   
     });
 
     $('.save-btn').on('click', function (e) {
@@ -62,7 +62,6 @@ $(document).ready(function () {
                 if (data.status) {
                     $('.modal-card').removeClass('modal-card-act');
                     loadProducts(currentStatus);
-                    // 🔥 обнуляем переменную после сохранения
                     photo = null;
                     $('#photo').val('');
                 } else {
