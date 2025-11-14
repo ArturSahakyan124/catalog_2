@@ -1,0 +1,39 @@
+
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Montserrat, sans-serif;
+  background-color: #fff;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+}
+
+input {
+  margin: 10px 0;
+  padding: 10px;
+  border: none;
+  border-bottom: 2px solid #e3e3e3;
+  outline: none;
+  font-size: 14px;
+}
+
+ 
+ 
+ 
+
+a {
+  color: #7c9ab7;
+  font-weight: bold;
+  text-decoration: none;
+  margin-top: 10px;
+}
+
+p {
+  margin: 10px 0;
+}
